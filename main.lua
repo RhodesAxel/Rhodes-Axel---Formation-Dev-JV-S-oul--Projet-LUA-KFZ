@@ -86,9 +86,9 @@ function gameScene(dt)
         end 
     end 
 
-    if #tirPerso or #tirSeringue > 0 then 
+    if #tirPerso  > 0 then 
         tirActif = true
-    elseif #tirPerso or #tirSeringue <= 0 then 
+    elseif #tirPerso  <= 0 then 
         tirActif = false
     end
     time = time - dt
@@ -320,42 +320,42 @@ function love.keypressed(key, scancode)
         point = point - 50
         levelThree()
     end
-    if key == "g" and currentScene == "Win" and niveau == 3  then 
-        currentScene = "Menu"
-    end
+
     if key == "g" and currentScene == "WinFinal"  then 
+        niveau = 0 
         currentScene = "Menu"
     end
 end     
 
 function love.mousepressed(x, y, button) 
-    if button == 1 then 
-        local tir = perso.fire()
-        table.insert(tirPerso, tir)
+    if currentScene == "Game" then 
+        if button == 1 then 
+            local tir = perso.fire()
+            table.insert(tirPerso, tir)
+        end 
+        if button == 2 then 
+            local seringue= perso.fireSeringue()
+            table.insert(tirSeringue, seringue)
+        end 
     end 
-    if button == 2 then 
-        local seringue= perso.fireSeringue()
-        table.insert(tirSeringue, seringue)
-    end 
-    
 end
 ---------------------------------------------Paramétrage des Niveaux---------------------------------------------------------------------
 function levelOne()
     currentScene = "Game"
     niveau = 1
     perso.init(100,10) 
-    for z = #enemies, 1, -1 do 
+    for z = #enemies, 10, -1 do 
         table.remove(enemies, z)
     end 
-    if #enemies ~=1 then 
-        for z = #enemies,1,1 do
+    if #enemies ~=10 then 
+        for z = #enemies,9,1 do
             table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(100,160), perso))
         end
     end
     local tirPerso = {}
     local tirSeringue = {}
     objectif = newObjectif(math.random(90,SCREEN_SIZE.width * .5),math.random(90,SCREEN_SIZE.height * .5))
-    survivant = newSurvivant(posX ,posY ,160,perso)
+    survivant = newSurvivant(posX ,posY ,200,perso)
     exit = ExitDoor(perso.start.x,perso.start.y)
     point = 0
     time = 60
@@ -366,12 +366,12 @@ function levelTwo()
     currentScene = "Game"
     niveau = 2
     perso.init(150,15) 
-    survivant = newSurvivant(posX ,posY ,160,perso)
-    for n = #enemies, 1, -1 do 
+    survivant = newSurvivant(posX ,posY ,200,perso)
+    for n = #enemies, 15, -1 do 
         table.remove(enemies, n)
     end 
     if #enemies ~=1 then 
-        for z = #enemies,1,1 do
+        for z = #enemies,14,1 do
             table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(130,180), perso))
         end
     end
@@ -386,12 +386,12 @@ function levelThree()
     currentScene = "Game"
     niveau = 3
     perso.init(150,15) 
-    survivant = newSurvivant(posX ,posY ,160,perso)
-    for n = #enemies, 1, -1 do 
+    survivant = newSurvivant(posX ,posY ,200,perso)
+    for n = #enemies, 20, -1 do 
         table.remove(enemies, n)
     end 
     if #enemies ~=1 then 
-        for z = #enemies,1,1 do
+        for z = #enemies,19,1 do
             table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(150,190), perso))
         end
     end

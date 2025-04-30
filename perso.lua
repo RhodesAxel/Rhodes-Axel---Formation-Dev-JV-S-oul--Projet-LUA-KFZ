@@ -1,4 +1,4 @@
-tire = require("tir")
+ require("tir")
 require("bonus")
 require("seringue")
 require("survivant")
@@ -9,7 +9,7 @@ tirImg = love.graphics.newImage("img/perso_tir.png")
 posX = 0
 posY = 0
 persoAngle = 0
-speed = 160
+speed = 180
 direction = 0
 offSet = {x = walkImg:getWidth() / 2, y = walkImg:getHeight() / 2}
 tirActif = false
@@ -61,8 +61,8 @@ local perso = {}
         local dy = mouseY - posY
         persoAngle = math.atan2(dy, dx)
         
-        firePoint.x =  math.cos(persoAngle) + posX
-        firePoint.y =  math.sin(persoAngle) * 0  + posY
+        firePoint.x =  math.cos(persoAngle)  * cannonHeight + posX
+        firePoint.y =  math.sin(persoAngle) * cannonHeight + posY
     end
 
     perso.fire = function()
@@ -183,7 +183,7 @@ local perso = {}
             love.graphics.draw(walkImg, posX,posY,persoAngle, 1, 1, offSet.x, offSet.y)
             else  
             love.graphics.draw(tirImg, posX,posY,persoAngle, 1, 1, offSet.x, offSet.y)
-            end
+            end 
         elseif perso.isFree == true then 
         end
         if perso.bouclier > 0 then 

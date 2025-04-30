@@ -127,7 +127,7 @@ function ifCollision()
                 z.y = z.getPosY()
                 seringue.isFree = true
                 z.takeDamage(seringue.dammage)
-                survivant = newSurvivant(z.x ,z.y,160,perso)
+                survivant = newSurvivant(z.x ,z.y,180,perso)
                 survivant.isFree = false
 
             end
@@ -355,10 +355,12 @@ function levelOne()
     local tirPerso = {}
     local tirSeringue = {}
     objectif = newObjectif(math.random(90,SCREEN_SIZE.width * .5),math.random(90,SCREEN_SIZE.height * .5))
-    survivant = newSurvivant(posX ,posY ,200,perso)
+    survivant = newSurvivant(posX ,posY ,180,perso)
     exit = ExitDoor(perso.start.x,perso.start.y)
     point = 0
     time = 60
+    life = 100 
+    perso.bouclier = 0
     
 end 
 
@@ -366,7 +368,7 @@ function levelTwo()
     currentScene = "Game"
     niveau = 2
     perso.init(150,15) 
-    survivant = newSurvivant(posX ,posY ,200,perso)
+    survivant = newSurvivant(posX ,posY ,180,perso)
     for n = #enemies, 15, -1 do 
         table.remove(enemies, n)
     end 
@@ -386,7 +388,7 @@ function levelThree()
     currentScene = "Game"
     niveau = 3
     perso.init(150,15) 
-    survivant = newSurvivant(posX ,posY ,200,perso)
+    survivant = newSurvivant(posX ,posY ,180,perso)
     for n = #enemies, 20, -1 do 
         table.remove(enemies, n)
     end 

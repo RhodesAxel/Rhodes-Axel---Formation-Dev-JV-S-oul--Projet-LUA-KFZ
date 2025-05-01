@@ -161,8 +161,8 @@ end
 function love.draw()
     if currentScene == "Menu" then 
         love.graphics.setBackgroundColor(0,0,0)
-        love.graphics.print("Menu",SCREEN_SIZE.width * .5, SCREEN_SIZE.height * .5)
-        love.graphics.print("Appuyer sur G POUR LANCER LE JEU",SCREEN_SIZE.width * .5 , SCREEN_SIZE.height - 100)
+        love.graphics.print("Menu Principal",SCREEN_SIZE.width * .5 - 50, SCREEN_SIZE.height * .5)
+        love.graphics.print("Appuyer sur ESPACE pour lancer le jeux",SCREEN_SIZE.width * .5 - 120 , SCREEN_SIZE.height - 100)
 
 -- Affichage du Jeu 
     elseif currentScene == "Game" then 
@@ -212,6 +212,7 @@ function love.draw()
         love.graphics.setBackgroundColor(0.1,0.4,0.1)
         love.graphics.print("Victoire ! ",SCREEN_SIZE.width * .5, SCREEN_SIZE.height * .5)
         love.graphics.print("Vous avez gagné "..point.." Point",SCREEN_SIZE.width * .5 , SCREEN_SIZE.height * .5 + 50)
+        love.graphics.print("Appuyer sur ESPACE pour continuer",SCREEN_SIZE.width * .5 - 120 , SCREEN_SIZE.height - 100)
         bonusDef.draw()
         bonusAtt.draw()
         bonusVie.draw()
@@ -220,7 +221,7 @@ function love.draw()
         love.graphics.print("Victoire ! ",SCREEN_SIZE.width * .5, SCREEN_SIZE.height * .5)
         love.graphics.print("Vous avez gagné "..point.." Point",SCREEN_SIZE.width * .5 , SCREEN_SIZE.height * .5 + 50)
         love.graphics.print("Vous avez sauvé "..survivantSauver.." survivant",SCREEN_SIZE.width * .5 , SCREEN_SIZE.height * .5 + 150)
-
+        love.graphics.print("Appuyer sur ESPACE pour continuer",SCREEN_SIZE.width * .5 - 120 , SCREEN_SIZE.height - 100)
 -- Affichage Menu Pause 
     elseif currentScene == "pause" then 
         love.graphics.setBackgroundColor(0.5,0.5,0.5,0.2)
@@ -253,7 +254,7 @@ function love.draw()
         love.graphics.print("la souris pour se diriger ",SCREEN_SIZE.width * .5, SCREEN_SIZE.height * .5 + 80)
         love.graphics.print("Trouver la clefs pour fair apparaitre la porte et passé le niveau suivant ",SCREEN_SIZE.width * .5, SCREEN_SIZE.height * .5 + 100)
         love.graphics.print("Tuer un zombie rapporte 10 point, un survivant rapporte 100 point ",SCREEN_SIZE.width * .5, SCREEN_SIZE.height * .5 + 120)
-        love.graphics.print("Appuyer sur G POUR LANCER LE JEU",SCREEN_SIZE.width * .5 , SCREEN_SIZE.height - 140)
+        love.graphics.print("Appuyer sur ESPACE POUR LANCER LE JEU",SCREEN_SIZE.width * .5 , SCREEN_SIZE.height - 140)
     end 
         
     
@@ -262,9 +263,9 @@ end
 function love.keypressed(key, scancode)
     
     ------------------------NAVIGATION DES MENUS BASIQUES-------------------------------------------------------------
-    if key == "g" and currentScene == "Menu" and niveau == 0 then 
+    if key == "space" and currentScene == "Menu" and niveau == 0 then 
         currentScene = "Explication"
-    elseif key == "g" and currentScene == "Explication" then 
+    elseif key == "space" and currentScene == "Explication" then 
         levelOne()
     elseif key == "g" and currentScene == "Game" then 
         currentScene = "pause"
@@ -287,7 +288,7 @@ function love.keypressed(key, scancode)
         niveau = 0
     end
     ------------------------Gestion du niveau 2  -------------------------------------------------------------
-    if key == "g" and currentScene == "Win" and niveau == 1  then 
+    if key == "space" and currentScene == "Win" and niveau == 1  then 
         levelTwo()
     end
     if key == "c" and currentScene == "Win" and niveau == 1 and point >= 150 then 
@@ -321,8 +322,9 @@ function love.keypressed(key, scancode)
         levelThree()
     end
 
-    if key == "g" and currentScene == "WinFinal"  then 
+    if key == "space" and currentScene == "WinFinal"  then 
         niveau = 0 
+        survivantSauver = 0
         currentScene = "Menu"
     end
 end     
@@ -344,13 +346,11 @@ function levelOne()
     currentScene = "Game"
     niveau = 1
     perso.init(100,10) 
-    for z = #enemies, 10, -1 do 
+    for z = #enemies, #enemies, -1 do 
         table.remove(enemies, z)
     end 
-    if #enemies ~=10 then 
-        for z = #enemies,9,1 do
-            table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(100,160), perso))
-        end
+    for z = #enemies,9,1 do
+        table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(100,160), perso))
     end
     local tirPerso = {}
     local tirSeringue = {}
@@ -361,7 +361,7 @@ function levelOne()
     time = 60
     life = 100 
     perso.bouclier = 0
-    
+    alertTime = false
 end 
 
 function levelTwo()
@@ -369,14 +369,12 @@ function levelTwo()
     niveau = 2
     perso.init(150,15) 
     survivant = newSurvivant(posX ,posY ,180,perso)
-    for n = #enemies, 15, -1 do 
-        table.remove(enemies, n)
+    for z = #enemies, #enemies, -1 do 
+        table.remove(enemies, z)
     end 
-    if #enemies ~=1 then 
-        for z = #enemies,14,1 do
-            table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(130,180), perso))
-        end
-    end
+    for z = #enemies,14,1 do
+        table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(130,180), perso))
+    end 
     tirPerso = {}
     objectif = newObjectif(math.random(90,SCREEN_SIZE.width * .5),math.random(90,SCREEN_SIZE.height * .5))
     exit = ExitDoor(perso.start.x,perso.start.y)
@@ -389,14 +387,13 @@ function levelThree()
     niveau = 3
     perso.init(150,15) 
     survivant = newSurvivant(posX ,posY ,180,perso)
-    for n = #enemies, 20, -1 do 
-        table.remove(enemies, n)
+    for z = #enemies, #enemies, -1 do 
+        table.remove(enemies, z)
     end 
-    if #enemies ~=1 then 
-        for z = #enemies,19,1 do
-            table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(150,190), perso))
-        end
+    for z = #enemies,19,1 do
+        table.insert(enemies,newZombie(math.random(80,SCREEN_SIZE.width * .5),math.random(80,SCREEN_SIZE.height * .5),math.random(150,190), perso))
     end
+    
     tirPerso = {}
     objectif = newObjectif(math.random(90,SCREEN_SIZE.width * .5),math.random(90,SCREEN_SIZE.height * .5))
     exit = ExitDoor(perso.start.x,perso.start.y)
